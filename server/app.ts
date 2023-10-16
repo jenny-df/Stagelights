@@ -1,10 +1,34 @@
-import FriendConcept from "./concepts/friend";
-import PostConcept from "./concepts/post";
+import ApplauseConcept from "./concepts/applause";
+import ApplicationConcept from "./concepts/application";
+import ChallengeConcept from "./concepts/challenge";
+import CommentConcept from "./concepts/comment";
+import ConnectionConcept from "./concepts/connection";
+import FocusedPostConcept from "./concepts/focusedPost";
+import FolderConcept from "./concepts/folder";
+import MediaConcept from "./concepts/media";
+import OpportunityConcept from "./concepts/opportunity";
+import PortfolioConcept from "./concepts/portfolio";
+import QueueConcept from "./concepts/queue";
+import RestrictionsConcept from "./concepts/restrictions";
+import TagConcept from "./concepts/tag";
 import UserConcept from "./concepts/user";
+import VoteConcept from "./concepts/vote";
 import WebSessionConcept from "./concepts/websession";
 
 // App Definition using concepts
 export const WebSession = new WebSessionConcept();
 export const User = new UserConcept();
-export const Post = new PostConcept();
-export const Friend = new FriendConcept();
+export const FocusedPost = new FocusedPostConcept();
+export const Connection = new ConnectionConcept();
+export const Comment = new CommentConcept();
+export const Tag = new TagConcept();
+export const Challenge = new ChallengeConcept();
+export const Applause = new ApplauseConcept();
+export const Opportunity = new OpportunityConcept();
+export const Vote = new VoteConcept();
+export const Application = new ApplicationConcept();
+export const Queue = new QueueConcept();
+export const Folder = new FolderConcept();
+export const Restrictions = new RestrictionsConcept();
+export const Portfolio = new PortfolioConcept();
+export const Media = new MediaConcept();
