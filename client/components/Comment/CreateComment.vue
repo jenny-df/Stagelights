@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
 const content = ref("");
-const post = ref("652f4d65a3ea4fd3eaab0000");
+const props = defineProps(["parent"]);
 const emit = defineEmits(["refreshComments"]);
 
 const createComment = async (content: string, post: string) => {
@@ -24,7 +24,7 @@ const emptyForm = () => {
 </script>
 
 <template>
-  <form @submit.prevent="createComment(content, post)">
+  <form @submit.prevent="createComment(content, props.parent.id)">
     <input id="content" type="text" v-model="content" placeholder="Comment" required />
     <button type="submit" class="pure-button-primary pure-button">Comment</button>
   </form>

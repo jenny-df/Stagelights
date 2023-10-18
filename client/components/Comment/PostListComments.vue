@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import CreateComment from "@/components/Comment/CreateComment.vue";
-import Comment from "@/components/Post/Comment.vue";
-import EditCommentForm from "@/components/Post/EditCommentForm.vue";
+import EditCommentForm from "@/components/Comment/EditCommentForm.vue";
 import { useUserStore } from "@/stores/user";
 import { fetchy } from "@/utils/fetchy";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref } from "vue";
+
 const { isLoggedIn } = storeToRefs(useUserStore());
 
 const props = defineProps(["parent"]);
@@ -13,7 +13,7 @@ const loaded = ref(false);
 let comments = ref<Array<Record<string, string>>>([]);
 let editing = ref("");
 
-async function getComments() {
+const getComments = async () => {
   let commentResults;
   try {
     commentResults = await fetchy(`/api/comments/${props.parent.id}`, "GET");
@@ -21,7 +21,7 @@ async function getComments() {
     return;
   }
   comments.value = commentResults;
-}
+};
 
 function updateEditing(id: string) {
   editing.value = id;
@@ -36,11 +36,11 @@ onBeforeMount(async () => {
 <template>
   <section v-if="isLoggedIn">
     <h2>Create a comment:</h2>
-    <CreateComment @refreshComments="getComments" />
+    <CreateComment @refreshComments="getComments" :parent="props.parent" />
   </section>
   <section class="comments" v-if="loaded && comments.length !== 0">
     <article v-for="comment in comments" :key="comment._id">
-      <Comment v-if="editing !== comment._id" :comment="comment" @refreshComments="getComments" @editComment="updateEditing" />
+      <CommentComponent v-if="editing !== comment._id" :comment="comment" @refreshComments="getComments" @editComment="updateEditing" />
       <EditCommentForm v-else :comment="comment" @refreshComments="getComments" @editComment="updateEditing" />
     </article>
   </section>
@@ -71,7 +71,7 @@ article {
   padding: 1em;
 }
 
-.posts {
+.comments {
   padding: 1em;
 }
 
