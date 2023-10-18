@@ -6,11 +6,13 @@ import { fetchy } from "../../utils/fetchy";
 
 const props = defineProps(["post"]);
 const emit = defineEmits(["editPost", "refreshPosts"]);
-const { currentUsername } = storeToRefs(useUserStore());
+const { currentName } = storeToRefs(useUserStore());
 
 const deletePost = async () => {
   try {
-    await fetchy(`/api/posts/${props.post._id}`, "DELETE");
+    await fetchy("/api/focusedPosts", "DELETE", {
+      body: { id: props.post._id },
+    });
   } catch {
     return;
   }
@@ -20,9 +22,10 @@ const deletePost = async () => {
 
 <template>
   <p class="author">{{ props.post.author }}</p>
+  <iframe src="{{ props.post.mediaURLs }}"></iframe>
   <p>{{ props.post.content }}</p>
   <div class="base">
-    <menu v-if="props.post.author == currentUsername">
+    <menu v-if="props.post.author == currentName">
       <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li>
       <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
     </menu>
