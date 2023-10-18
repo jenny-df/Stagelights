@@ -2,15 +2,15 @@
 import { useUserStore } from "@/stores/user";
 import { ref } from "vue";
 
-let username = ref("");
+let email = ref("");
 let password = ref("");
 
 const { updateUser, updateSession } = useUserStore();
 
-async function updateUsername() {
-  await updateUser({ username: username.value });
+async function updateEmail() {
+  await updateUser({ email: email.value });
   await updateSession();
-  username.value = "";
+  email.value = "";
 }
 
 async function updatePassword() {
@@ -22,11 +22,11 @@ async function updatePassword() {
 
 <template>
   <h2>Update user details</h2>
-  <form @submit.prevent="updateUsername" class="pure-form">
+  <form @submit.prevent="updateEmail" class="pure-form">
     <fieldset>
-      <legend>Change your username</legend>
-      <input type="text" placeholder="New username" v-model="username" required />
-      <button type="submit" class="pure-button pure-button-primary">Update username</button>
+      <legend>Change your email</legend>
+      <input type="text" placeholder="New email" v-model="email" required />
+      <button type="submit" class="pure-button pure-button-primary">Update email</button>
     </fieldset>
   </form>
 

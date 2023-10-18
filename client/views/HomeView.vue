@@ -2,23 +2,32 @@
 import PostListComponent from "@/components/Post/PostListComponent.vue";
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
+import { RouterLink } from "vue-router";
 
-const { currentUsername, isLoggedIn } = storeToRefs(useUserStore());
+const { currentName, isLoggedIn } = storeToRefs(useUserStore());
 </script>
 
 <template>
   <main>
-    <h1>Home Page</h1>
-    <section>
-      <h1 v-if="isLoggedIn">Welcome {{ currentUsername }}!</h1>
-      <h1 v-else>Please login!</h1>
+    <section v-if="isLoggedIn">
+      <h1>Welcome {{ currentName }}!</h1>
+      <PostListComponent v-if="isLoggedIn" />
     </section>
-    <PostListComponent />
+    <section v-else>
+      <h1>Welcome to Stagelights!</h1>
+      <p>Login or sign up to continue.</p>
+      <br />
+      <br />
+      <RouterLink :to="{ name: 'Login' }"> <button>Login</button> </RouterLink>
+      <br />
+      <br />
+      <RouterLink :to="{ name: 'Signup' }"> <button>Register</button> </RouterLink>
+    </section>
   </main>
 </template>
 
 <style scoped>
-h1 {
+main {
   text-align: center;
 }
 </style>

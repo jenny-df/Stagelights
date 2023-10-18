@@ -3,12 +3,14 @@ import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
 const content = ref("");
+const mediaURLs = ref("");
+const category = ref("652f4d65a3ea4fd3eaab0000");
 const emit = defineEmits(["refreshPosts"]);
 
-const createPost = async (content: string) => {
+const createPost = async (content: string, mediaURLs: string, category: string) => {
   try {
-    await fetchy("/api/posts", "POST", {
-      body: { content },
+    await fetchy("/api/focusedPosts", "POST", {
+      body: { content, mediaURLs, category },
     });
   } catch (_) {
     return;
@@ -23,9 +25,11 @@ const emptyForm = () => {
 </script>
 
 <template>
-  <form @submit.prevent="createPost(content)">
+  <form @submit.prevent="createPost(content, mediaURLs, category)">
     <label for="content">Post Contents:</label>
     <textarea id="content" v-model="content" placeholder="Create a post!" required> </textarea>
+    <!-- <input id="category" v-model="category" type="text" placeholder="Category Id" required /> -->
+    <input id="mediaURLs" v-model="mediaURLs" type="text" placeholder="Media URLs seperated by comma" required />
     <button type="submit" class="pure-button-primary pure-button">Create Post</button>
   </form>
 </template>

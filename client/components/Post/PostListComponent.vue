@@ -19,7 +19,7 @@ async function getPosts(author?: string) {
   let query: Record<string, string> = author !== undefined ? { author } : {};
   let postResults;
   try {
-    postResults = await fetchy("/api/posts", "GET", { query });
+    postResults = await fetchy("/api/focusedPosts", "GET", { query });
   } catch (_) {
     return;
   }
@@ -51,6 +51,7 @@ onBeforeMount(async () => {
     <article v-for="post in posts" :key="post._id">
       <PostComponent v-if="editing !== post._id" :post="post" @refreshPosts="getPosts" @editPost="updateEditing" />
       <EditPostForm v-else :post="post" @refreshPosts="getPosts" @editPost="updateEditing" />
+      <!-- <PostListComments :parent="post" /> -->
     </article>
   </section>
   <p v-else-if="loaded">No posts found</p>

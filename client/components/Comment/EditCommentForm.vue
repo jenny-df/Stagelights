@@ -3,34 +3,32 @@ import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 import { formatDate } from "../../utils/formatDate";
 
-const props = defineProps(["post"]);
-const content = ref(props.post.content);
-const mediaURLs = ref(props.post.mediaURLs);
-const emit = defineEmits(["editPost", "refreshPosts"]);
+const props = defineProps(["comment"]);
+const content = ref(props.comment.content);
+const emit = defineEmits(["editComment", "refreshComments"]);
 
-const editPost = async (content: string, mediaURLs: string) => {
+const editComment = async (newContent: string) => {
   try {
-    await fetchy(`/api/focusedPosts/${props.post._id}`, "PATCH", { body: { _id: props.post._id, update: { content: content, mediaURLs: mediaURLs } } });
+    await fetchy(`/api/comments/${props.comment._id}`, "PATCH", { body: { _id: props.comment._id, newContent } });
   } catch (e) {
     return;
   }
-  emit("editPost");
-  emit("refreshPosts");
+  emit("editComment");
+  emit("refreshComments");
 };
 </script>
 
 <template>
-  <form @submit.prevent="editPost(content, mediaURLs)">
-    <p class="author">{{ props.post.author }}</p>
+  <form @submit.prevent="editComment(content)">
+    <p class="author">{{ props.comment.author }}</p>
     <textarea id="content" v-model="content" placeholder="New content" required> </textarea>
-    <textarea id="urls" v-model="mediaURLs" placeholder="New media" required> </textarea>
     <div class="base">
       <menu>
         <li><button class="btn-small pure-button-primary pure-button" type="submit">Save</button></li>
-        <li><button class="btn-small pure-button" @click="emit('editPost')">Cancel</button></li>
+        <li><button class="btn-small pure-button" @click="emit('editComment')">Cancel</button></li>
       </menu>
-      <p v-if="props.post.dateCreated !== props.post.dateUpdated" class="timestamp">Edited on: {{ formatDate(props.post.dateUpdated) }}</p>
-      <p v-else class="timestamp">Created on: {{ formatDate(props.post.dateCreated) }}</p>
+      <p v-if="props.comment.dateCreated !== props.comment.dateUpdated" class="timestamp">Edited on: {{ formatDate(props.comment.dateUpdated) }}</p>
+      <p v-else class="timestamp">Created on: {{ formatDate(props.comment.dateCreated) }}</p>
     </div>
   </form>
 </template>

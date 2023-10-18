@@ -6,32 +6,36 @@ import { BodyT, fetchy } from "@/utils/fetchy";
 export const useUserStore = defineStore(
   "user",
   () => {
-    const currentUsername = ref("");
+    const currentName = ref("");
+    const currentEmail = ref("");
 
-    const isLoggedIn = computed(() => currentUsername.value !== "");
+    const isLoggedIn = computed(() => currentName.value && currentEmail.value);
 
     const resetStore = () => {
-      currentUsername.value = "";
+      currentName.value = "";
+      currentEmail.value = "";
     };
 
-    const createUser = async (username: string, password: string) => {
+    const createUser = async (email: string, password: string, name: string, profilePic: string, birthday: Date, city: string, state: string, country: string, userType: string) => {
       await fetchy("/api/users", "POST", {
-        body: { username, password },
+        body: { email, password, name, profilePic, birthday, city, state, country, userType },
       });
     };
 
-    const loginUser = async (username: string, password: string) => {
+    const loginUser = async (email: string, password: string) => {
       await fetchy("/api/login", "POST", {
-        body: { username, password },
+        body: { email, password },
       });
     };
 
     const updateSession = async () => {
       try {
-        const { username } = await fetchy("/api/session", "GET", { alert: false });
-        currentUsername.value = username;
+        const { name, email } = await fetchy("/api/session", "GET", { alert: false });
+        currentName.value = name;
+        currentEmail.value = email;
       } catch {
-        currentUsername.value = "";
+        currentName.value = "";
+        currentEmail.value = "";
       }
     };
 
@@ -40,8 +44,8 @@ export const useUserStore = defineStore(
       resetStore();
     };
 
-    const updateUser = async (patch: BodyT) => {
-      await fetchy("/api/users", "PATCH", { body: { update: patch } });
+    const updateUser = async (patch: BodyT, profilePic?: string) => {
+      await fetchy("/api/users", "PATCH", { body: { update: patch, profilePic } });
     };
 
     const deleteUser = async () => {
@@ -50,7 +54,8 @@ export const useUserStore = defineStore(
     };
 
     return {
-      currentUsername,
+      currentName,
+      currentEmail,
       isLoggedIn,
       createUser,
       loginUser,
