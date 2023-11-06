@@ -4,9 +4,10 @@ import DocCollection, { BaseDoc } from "../framework/doc";
 import { BadValuesError, NotAllowedError, NotFoundError } from "./errors";
 
 export interface Style {
-  backgroundImage: string;
-  backgroundColor: string;
+  backgroundImage: string | null;
+  backgroundColor: string | null;
   font: string;
+  fontSize: number;
   textColor: string;
 }
 
@@ -39,9 +40,22 @@ export default class PortfolioConcept {
    * @param headshot headshot of the user
    * @returns an object containing a success message and a portfolio object
    */
-  async create(user: ObjectId, style: Style, intro: string, info: ProfessionalInfo, media: ObjectId[], headshot: ObjectId) {
+  async create(user: ObjectId, headshot: ObjectId) {
     await this.alreadyExists(user);
-    const _id = await this.portfolios.createOne({ user, style, intro, info, media, headshot });
+    const style = {
+      backgroundImage: null,
+      backgroundColor: "white",
+      font: "Ariel",
+      fontSize: 12,
+      textColor: "black",
+    };
+    const info = {
+      education: [],
+      experience: [],
+      skills: [],
+      languages: [],
+    };
+    const _id = await this.portfolios.createOne({ user, style, intro: "", info, media: [], headshot });
     return { msg: "Portfolio successfully created!", portfolio: await this.portfolios.readOne({ _id }) };
   }
 

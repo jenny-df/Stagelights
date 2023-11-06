@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onBeforeMount, ref, Ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
 const content = ref("");
 const mediaURLs = ref("");
-const category = ref("652f4d65a3ea4fd3eaab0000");
+const category = ref("");
+const categories: Ref<any[]> = ref([]);
+const loaded = ref(false);
 const emit = defineEmits(["refreshPosts"]);
 
 const createPost = async (content: string, mediaURLs: string, category: string) => {
@@ -19,19 +21,42 @@ const createPost = async (content: string, mediaURLs: string, category: string) 
   emptyForm();
 };
 
+const getCategories = async () => {
+  try {
+    categories.value = await fetchy("/api/categories", "GET");
+  } catch (_) {
+    return;
+  }
+};
+
 const emptyForm = () => {
   content.value = "";
+  category.value = "";
+  mediaURLs.value = "";
 };
+
+onBeforeMount(async () => {
+  await getCategories();
+  loaded.value = true;
+});
 </script>
 
 <template>
-  <form @submit.prevent="createPost(content, mediaURLs, category)">
+  <form @submit.prevent="createPost(content, mediaURLs, category)" v-if="loaded && categories.length">
     <label for="content">Post Contents:</label>
     <textarea id="content" v-model="content" placeholder="Create a post!" required> </textarea>
-    <!-- <input id="category" v-model="category" type="text" placeholder="Category Id" required /> -->
+    <select name="category" id="category" v-model="category">
+      <option :value="c._id" v-for="c in categories" :key="c._id">{{ c.name }}</option>
+    </select>
     <input id="mediaURLs" v-model="mediaURLs" type="text" placeholder="Media URLs seperated by comma" required />
     <button type="submit" class="pure-button-primary pure-button">Create Post</button>
   </form>
+  <section v-else-if="!loaded">
+    <h1>Loading...</h1>
+  </section>
+  <section v-else>
+    <h1>Currently can't create posts due to lack of categories. Contact Admin for change.</h1>
+  </section>
 </template>
 
 <style scoped>
