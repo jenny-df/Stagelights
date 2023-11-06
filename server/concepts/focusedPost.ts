@@ -64,7 +64,21 @@ export default class FocusedPostConcept {
     if (post) {
       return post;
     }
-    throw new BadValuesError("Post with id {0} doesn't exist", _id);
+    throw new BadValuesError(`Post with id ${_id} doesn't exist`);
+  }
+
+  /**
+   * Get posts for challenges accepted today
+   * @returns posts accepted today
+   */
+  async getAcceptedToday() {
+    const category = await this.getCategoryByName("Challenge", "Daily creative challenges");
+
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    const end = new Date();
+
+    return await this.posts.readMany({ category: category._id, dateCreated: { $gte: start, $lt: end } });
   }
 
   /**
@@ -115,6 +129,19 @@ export default class FocusedPostConcept {
    */
   async getAllCategories() {
     return await this.categories.readMany({});
+  }
+
+  /**
+   * Finds all category objects
+   * @returns category objects
+   */
+  async getCategoryByName(name: string, description: string) {
+    let category = await this.categories.readOne({ name });
+    if (!category) {
+      const categoryId = await this.categories.createOne({ name, description });
+      category = await this.getCategory(categoryId);
+    }
+    return category;
   }
 
   /**

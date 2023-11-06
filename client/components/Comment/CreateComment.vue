@@ -24,7 +24,7 @@ const emptyForm = () => {
 </script>
 
 <template>
-  <form @submit.prevent="createComment(content, props.parent.id)">
+  <form @submit.prevent="createComment(content, props.parent)">
     <input id="content" type="text" v-model="content" placeholder="Comment" required />
     <button type="submit" class="pure-button-primary pure-button">Comment</button>
   </form>

@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import router from "@/router";
 import { useUserStore } from "@/stores/user";
-import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { onBeforeMount, ref } from "vue";
+import { countries, states } from "../../utils/data";
+import { fetchy } from "../../utils/fetchy";
 
+const adminExists = ref(true);
 const email = ref("");
 const password = ref("");
 const name = ref("");
@@ -11,15 +15,26 @@ const birthday = ref(new Date());
 const city = ref("");
 const state = ref("");
 const country = ref("");
-const userType = ref("");
+const userType = ref<string[]>(["actor"]);
+const loaded = ref(false);
 const { createUser, loginUser, updateSession } = useUserStore();
+const { isLoggedIn } = storeToRefs(useUserStore());
+
+async function anyAdmin() {
+  adminExists.value = await fetchy("/api/anyAdmins", "GET");
+  loaded.value = true;
+}
 
 async function register() {
   await createUser(email.value, password.value, name.value, profilePic.value, birthday.value, city.value, state.value, country.value, userType.value);
   await loginUser(email.value, password.value);
   void updateSession();
-  void router.push({ name: "Home" });
+  if (isLoggedIn) {
+    void router.push({ name: "Home" });
+  }
 }
+
+onBeforeMount(async () => await anyAdmin());
 </script>
 
 <template>
@@ -48,23 +63,30 @@ async function register() {
       </div>
       <div class="pure-control-group">
         <label for="aligned-state">State</label>
-        <input v-model.trim="state" type="text" id="aligned-state" placeholder="State" />
+        <select name="state" v-model.trim="state" id="aligned-state">
+          <option v-for="state in states" :key="state" :value="state">{{ state }}</option>
+        </select>
       </div>
       <div class="pure-control-group">
         <label for="aligned-country">Country</label>
-        <input v-model.trim="country" type="text" id="aligned-country" placeholder="Country" required />
+        <select name="country" v-model.trim="country" id="aligned-country" required>
+          <option v-for="country in countries" :key="country" :value="country">{{ country }}</option>
+        </select>
       </div>
-      <div class="pure-control-group">
+      <div class="pure-control-group" v-if="loaded">
         <label for="aligned-types">User Type</label>
         <div id="aligned-types">
-          <label for="admin">Admin</label>
-          <input v-model.trim="userType" type="radio" id="admin" name="userType" value="admin" /><br />
+          <div class="adminSelector" v-if="!adminExists">
+            <label for="admin">Admin</label>
+            <input v-model="userType" type="checkbox" id="admin" name="userType" v-bind:value="'admin'" /><br />
+          </div>
           <label for="actor">Actor</label>
-          <input v-model.trim="userType" type="radio" id="actor" name="userType" value="actor" checked /><br />
+          <input v-model="userType" type="checkbox" id="actor" name="userType" v-bind:value="'actor'" /><br />
           <label for="casting">Casting Director</label>
-          <input v-model.trim="userType" type="radio" id="casting" name="userType" value="casting director" />
+          <input v-model="userType" type="checkbox" id="casting" name="userType" v-bind:value="'casting director'" />
         </div>
       </div>
+      <p v-else>Loading user types...</p>
       <div class="pure-control-group">
         <label for="aligned-password">Password</label>
         <input type="password" v-model.trim="password" id="aligned-password" placeholder="Password" required />

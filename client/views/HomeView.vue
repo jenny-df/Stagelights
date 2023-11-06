@@ -4,14 +4,13 @@ import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
 import { RouterLink } from "vue-router";
 
-const { currentName, isLoggedIn } = storeToRefs(useUserStore());
+const { isLoggedIn } = storeToRefs(useUserStore());
 </script>
 
 <template>
   <main>
     <section v-if="isLoggedIn">
-      <h1>Welcome {{ currentName }}!</h1>
-      <PostListComponent v-if="isLoggedIn" />
+      <PostListComponent />
     </section>
     <section v-else>
       <h1>Welcome to Stagelights!</h1>

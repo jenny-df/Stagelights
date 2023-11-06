@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import AdminSettings from "../components/Setting/AdminSettings.vue";
+import CategorySettings from "../components/Setting/CategorySettings.vue";
+import PracticeFolderSettings from "../components/Setting/PracticeFolderSettings.vue";
 </script>
 
 <template>
   <main class="column">
-    <AdminSettings />
+    <CategorySettings />
+    <hr />
+    <PracticeFolderSettings />
   </main>
 </template>
