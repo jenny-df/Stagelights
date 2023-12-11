@@ -26,13 +26,28 @@ async function cancelRequest() {
 </script>
 
 <template>
-  <div class="requestCard">
-    <h3>{{ props.user.name }}</h3>
-    <menu>
-      <li v-if="!props.sent"><button @click="sendRequest()">Send Connection Request</button></li>
-      <li v-else><button @click="cancelRequest()">Cancel Connection Request</button></li>
-    </menu>
+  <div style="width: 50%; text-align: center; margin: auto">
+    <div class="requestCard">
+      <h3>{{ props.user.name }}</h3>
+      <menu>
+        <li v-if="!props.sent"><button @click="sendRequest()">Send Connection Request</button></li>
+        <li v-else><button @click="cancelRequest()">Cancel Connection Request</button></li>
+      </menu>
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.requestCard {
+  content: "";
+  display: table;
+  clear: both;
+  min-width: 70%;
+  border-radius: 8px;
+  margin-top: 30px;
+  margin-left: 10%;
+  margin-right: 10%;
+  padding: 20px;
+  background-color: lightgrey;
+}
+</style>
