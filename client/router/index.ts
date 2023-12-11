@@ -2,7 +2,6 @@ import { storeToRefs } from "pinia";
 import { createRouter, createWebHistory } from "vue-router";
 
 import { useUserStore } from "@/stores/user";
-import AdminView from "../views/AdminView.vue";
 import ApplicationsView from "../views/ApplicationsView.vue";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
@@ -76,12 +75,6 @@ const routes = [
     name: "Settings",
     component: SettingView,
     meta: { requiresAuth: true },
-  },
-  {
-    path: "/admin",
-    name: "Admin",
-    component: AdminView,
-    meta: { requiresAuth: true, requiresAdmin: true },
   },
   {
     path: "/login",

@@ -55,22 +55,66 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <h2>Add a category</h2>
-  <form @submit.prevent="addCategory(categoryName, categoryDescription)" class="pure-form">
-    <fieldset>
-      <input type="text" placeholder="Category Name" v-model="categoryName" required /><br />
-      <input type="text" placeholder="Category Description" v-model="categoryDescription" required /><br />
-      <button type="submit" class="pure-button pure-button-primary">Add</button>
-    </fieldset>
-  </form>
-  <div v-if="loaded">
-    <h2>Delete a category</h2>
-    <ul>
-      <li v-for="category in existingCategories" :key="category._id">
-        {{ category.name }} ({{ category.description }})
-        <button class="button-error btn-small pure-button" @click="deleteCategory(category._id)">Delete</button>
-      </li>
-    </ul>
+  <div class="row">
+    <div class="column-left">
+      <h1>Add a category</h1>
+    </div>
+    <div class="column-right seperation-left">
+      <form @submit.prevent="addCategory(categoryName, categoryDescription)" class="pure-form">
+        <fieldset>
+          <input type="text" placeholder="Category Name" v-model="categoryName" required /><br />
+          <input type="text" placeholder="Category Description" v-model="categoryDescription" required /><br />
+          <br />
+          <button type="submit" class="pure-button">Add</button>
+        </fieldset>
+      </form>
+    </div>
   </div>
-  <div v-else>Loading...</div>
+  <div class="row">
+    <div class="column-left">
+      <h1>Delete a category</h1>
+    </div>
+    <div class="column-right seperation-left">
+      <div v-if="loaded">
+        <ul>
+          <li v-for="category in existingCategories" :key="category._id">
+            {{ category.name }} ({{ category.description }})
+            <button class="button-error btn-small pure-button" @click="deleteCategory(category._id)">Delete</button>
+          </li>
+        </ul>
+      </div>
+      <div v-else>Loading...</div>
+    </div>
+  </div>
 </template>
+<style scoped>
+* {
+  box-sizing: border-box;
+}
+.row {
+  margin-top: 50px;
+  content: "";
+  display: table;
+  clear: both;
+  min-width: 100%;
+  background-color: lightgrey;
+}
+
+.column-left {
+  float: left;
+  width: 40%;
+  padding: 50px;
+  text-align: center;
+}
+.column-right {
+  float: left;
+  width: 60%;
+  padding: 50px;
+}
+.seperation-left {
+  border-left: 5px solid grey;
+}
+.seperation-right {
+  border-right: 5px solid grey;
+}
+</style>

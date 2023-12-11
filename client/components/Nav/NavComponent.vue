@@ -40,9 +40,6 @@ const currentRouteName = computed(() => currentRoute.name);
       <li>
         <RouterLink :to="{ name: 'Settings' }" :class="{ underline: currentRouteName == 'Settings' }"> Settings </RouterLink>
       </li>
-      <li v-if="isAdmin">
-        <RouterLink :to="{ name: 'Admin' }" :class="{ underline: currentRouteName == 'Admin' }"> Admin Settings </RouterLink>
-      </li>
       <li>
         <RouterLink :to="{ name: 'Logout' }"> Logout </RouterLink>
       </li>
