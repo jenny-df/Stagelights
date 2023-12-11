@@ -17,7 +17,9 @@ async function removeConnection() {
 <template>
   <div style="width: 50%; text-align: center; margin: auto">
     <div class="requestCard">
-      <h3>{{ props.connection.name }}</h3>
+      <RouterLink :to="{ name: 'Profile', params: { id: props.connection._id, name: props.connection.name } }">
+        <h3>{{ props.connection.name }}</h3>
+      </RouterLink>
       <p>Connections since {{ props.connection.dateCreated }}</p>
       <menu>
         <li><button @click="removeConnection()">Delete Connection</button></li>

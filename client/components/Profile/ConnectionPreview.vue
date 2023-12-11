@@ -15,6 +15,7 @@ onBeforeMount(async () => {
   }
   loaded.value = true;
 });
+
 watch(
   () => props.user,
   async (newId, oldId) => {
@@ -35,7 +36,9 @@ watch(
 <template>
   <div v-if="loaded" id="connectionCard">
     <div v-if="connections.length">
-      <h2>Connections:</h2>
+      <RouterLink :to="{ name: 'Connections', params: { userId: id, name: props.user.name } }">
+        <h2>Connections:</h2>
+      </RouterLink>
       <article v-for="user in connections" :key="user._id">
         <iframe :src="user.profilePic" scrolling="no" style="pointer-events: none" allowfullscreen="false" width="100px" height="100px"></iframe>
         <RouterLink :to="{ name: 'Profile', params: { id: user._id, name: user.name } }">

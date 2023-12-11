@@ -28,7 +28,9 @@ async function cancelRequest() {
 <template>
   <div style="width: 50%; text-align: center; margin: auto">
     <div class="requestCard">
-      <h3>{{ props.user.name }}</h3>
+      <RouterLink :to="{ name: 'Profile', params: { id: props.user._id, name: props.user.name } }">
+        <h3>{{ props.user.name }}</h3>
+      </RouterLink>
       <menu>
         <li v-if="!props.sent"><button @click="sendRequest()">Send Connection Request</button></li>
         <li v-else><button @click="cancelRequest()">Cancel Connection Request</button></li>
