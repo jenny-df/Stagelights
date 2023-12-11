@@ -10,7 +10,7 @@ let selected = ref<any>(null);
 
 async function getActiveOps() {
   try {
-    ops.value = (await fetchy("/api/opportunities/id", "GET")).filter((op) => op.isActive);
+    ops.value = (await fetchy("/api/opportunities/id", "GET")).filter((op: any) => op.isActive);
   } catch (_) {
     return;
   }
