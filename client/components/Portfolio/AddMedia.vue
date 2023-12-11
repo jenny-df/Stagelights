@@ -6,9 +6,9 @@ const emit = defineEmits(["stopChange", "refreshPortfolio"]);
 
 let url = ref("");
 
-const changeHeadshot = async (url: string) => {
+const addMedia = async (url: string) => {
   try {
-    await fetchy(`/api/portfolio`, "PATCH", { body: { update: { headshot: url } } });
+    await fetchy(`/api/portfolio/media/add`, "PATCH", { body: { media: url } });
   } catch {
     return;
   }
@@ -23,11 +23,15 @@ const emptyForm = () => {
 </script>
 
 <template>
-  <form @submit.prevent="changeHeadshot(url)">
-    <input type="url" v-model="url" required />
-    <button type="submit" class="pure-button-primary pure-button">Add</button>
+  <form @submit.prevent="addMedia(url)">
+    <input type="url" v-model="url" placeholder="Google Drive file URL (public)" required style="width: 300px" />
+    <button type="submit" class="pure-button-primary pure-button" style="margin-left: 5px">Add</button>
+    <button @click="() => emit('stopChange')" class="pure-button-primary pure-button" style="margin-left: 5px">Cancel</button>
   </form>
-  <button @click="() => emit('stopChange')" class="pure-button-primary pure-button">Cancel</button>
 </template>
 
-<style scoped></style>
+<style scoped>
+button {
+  border-radius: 4px;
+}
+</style>

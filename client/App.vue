@@ -40,7 +40,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <article v-if="toast !== null" class="toast" :class="toast.style">
+  <article v-if="toast !== null" class="toast" :class="toast.style" style="z-index: 99">
     <p>{{ toast.message }}</p>
   </article>
   <div class="sticky" id="navbar" v-if="isLoggedIn">

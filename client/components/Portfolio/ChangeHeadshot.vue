@@ -9,7 +9,7 @@ let url = ref(props.pic);
 
 const changeHeadshot = async (url: string) => {
   try {
-    await fetchy(`/api/portfolio`, "PATCH", { body: { update: { headshot: url } } });
+    await fetchy(`/api/portfolio/headshot`, "PATCH", { body: { headshot: url } });
   } catch {
     return;
   }
@@ -20,11 +20,13 @@ const changeHeadshot = async (url: string) => {
 </script>
 
 <template>
-  <form @submit.prevent="changeHeadshot(url)">
-    <input type="url" v-model="url" required />
-    <button type="submit" class="pure-button-primary pure-button">Change</button>
-  </form>
-  <button @click="() => emit('stopChange')" class="pure-button-primary pure-button">Cancel</button>
+  <div style="min-width: 100%">
+    <form @submit.prevent="changeHeadshot(url)">
+      <input type="url" v-model="url" required style="float: left; width: 400px; margin-bottom: 10px" />
+      <button type="submit" class="pure-button-primary pure-button" style="margin-left: 5px; float: left; width: 30%">Change</button>
+      <button @click="() => emit('stopChange')" class="pure-button-primary pure-button" style="margin-left: 5px; float: left; width: 30%">Cancel</button>
+    </form>
+  </div>
 </template>
 
 <style scoped></style>

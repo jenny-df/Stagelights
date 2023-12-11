@@ -16,6 +16,7 @@ async function getActiveOps() {
   try {
     adding.value = false;
     ops.value = await fetchy("/api/opportunities/id", "GET");
+
     active.value = ops.value.filter((op) => op.isActive);
     inactive.value = ops.value.filter((op) => !op.isActive);
   } catch (_) {
@@ -30,7 +31,7 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <OpInformation v-if="selected !== null" :op="selected" :owner="true" @back="() => (selected = null)" />
+  <OpInformation v-if="selected !== null" :op="selected" :owner="true" @back="() => (selected = null)" @refresh-ops="getActiveOps()" />
   <div v-else-if="!adding">
     <div style="text-align: right">
       <button @click="() => (adding = true)" class="pure-button" style="margin-top: 30px; margin-right: 80px">Add</button>
@@ -52,7 +53,15 @@ onBeforeMount(async () => {
     <h1 v-else-if="loaded" style="text-align: center; margin-top: 20vh">No inactive opportunities found</h1>
     <p v-else style="text-align: center; margin-top: 30vh">Loading...</p>
   </div>
-  <AddOp @refresh-ops="getActiveOps()" @cancel-add="() => (adding = false)" v-else />
+  <AddOp
+    @refresh-ops="
+      () => {
+        getActiveOps();
+      }
+    "
+    @cancel-add="() => (adding = false)"
+    v-else
+  />
 </template>
 
 <style scoped>
