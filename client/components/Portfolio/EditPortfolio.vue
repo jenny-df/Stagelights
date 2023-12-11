@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { ref, Ref } from "vue";
+import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
 const props = defineProps(["portfolio"]);
-
 const portfolio = ref(props.portfolio);
 const user = ref(props.portfolio.user);
 const emit = defineEmits(["editPortfolio", "refreshPortfolio"]);
 
-const adding = ref(false);
-
 const intro = ref(props.portfolio.intro);
 
+const adding = ref(false);
 // style
 const backgroundColor = ref(props.portfolio.style.backgroundColor);
 const backgroundImage = ref(props.portfolio.style.backgroundImage);
@@ -21,26 +19,36 @@ const fontSize = ref(props.portfolio.style.fontSize);
 const textColor = ref(props.portfolio.style.textColor);
 
 // info
-const education: Ref<string[]> = ref(props.portfolio.info.education);
-const skills: Ref<string[]> = ref(props.portfolio.info.skills);
-const experience: Ref<string[]> = ref(props.portfolio.info.experience);
-const languages: Ref<string[]> = ref(props.portfolio.info.languages);
+const education = ref(props.portfolio.info.education.join(", "));
+const skills = ref(props.portfolio.info.skills.join(", "));
+const experience = ref(props.portfolio.info.experience.join(", "));
+const languages = ref(props.portfolio.info.languages.join(", "));
 
-const editPorfolio = async () => {
+const editPorfolio = async (
+  intro: string,
+  backgroundColor: string,
+  backgroundImage: string,
+  font: string,
+  fontSize: number,
+  textColor: string,
+  education: string,
+  skills: string,
+  experience: string,
+  languages: string,
+) => {
   try {
     await fetchy(`/api/portfolio`, "PATCH", {
       body: {
         update: {
-          intro: intro.value,
-          style: { backgroundImage: backgroundImage.value, backgroundColor: backgroundColor.value, font: font.value, fontSize: fontSize.value, textColor: textColor.value },
-          info: { education: education.value, skills: skills.value, experience: experience.value, languages: languages.value },
+          intro: intro,
+          style: { backgroundImage: backgroundImage, backgroundColor: backgroundColor, font: font, fontSize: fontSize, textColor: textColor },
+          info: { education: education.split(", "), skills: skills.split(", "), experience: experience.split(", "), languages: languages.split(", ") },
         },
       },
     });
   } catch (e) {
     return;
   }
-  emit("editPortfolio");
   emit("refreshPortfolio");
 };
 
@@ -55,7 +63,7 @@ const deleteMedia = async (id: string) => {
 </script>
 
 <template>
-  <form @submit.prevent="editPorfolio()">
+  <form @submit.prevent="editPorfolio(intro, backgroundColor, backgroundImage, font, fontSize, textColor, education, skills, experience, languages)">
     <div class="portfolioBoarder" :style="{ color: textColor, fontSize: fontSize + 'px', backgroundColor: backgroundColor, backgroundImage: backgroundImageUsed, fontFamily: font }">
       <div class="personalInfo">
         <iframe :src="portfolio.headshot"></iframe>
@@ -66,50 +74,29 @@ const deleteMedia = async (id: string) => {
         <textarea v-model="intro" placeholder="Intro for your portfolio"></textarea>
       </div>
       <div class="professionalInfo">
-        <div v-if="education">
-          <b>Education</b>
-          <ul>
-            <li v-for="i of Array(education.length + 3).keys()" :key="i">
-              <input v-model="education[i]" type="text" placeholder="Education {{ i }}" />
-            </li>
-          </ul>
-        </div>
-        <div v-if="experience">
-          <b>Experience</b>
-          <ul>
-            <li v-for="i of Array(experience.length + 3).keys()" :key="i">
-              <input v-model="experience[i]" type="text" placeholder="Experience {{ i }}" />
-            </li>
-          </ul>
-        </div>
-        <div v-if="skills">
-          <b>Skills</b>
-          <ul>
-            <li v-for="i of Array(skills.length + 3).keys()" :key="i">
-              <input v-model="skills[i]" type="text" placeholder="Skill {{ i }}" />
-            </li>
-          </ul>
-        </div>
-        <div v-if="languages">
-          <b>Languages</b>
-          <ul>
-            <li v-for="i of Array(languages.length + 3).keys()" :key="i">
-              <input v-model="languages[i]" type="text" placeholder="Language {{ i }}" />
-            </li>
-          </ul>
-        </div>
+        <b>Education</b>
+        <input type="text" v-model="education" placeholder="Education (seperate by ', ')" />
+
+        <b>Experience</b>
+        <input type="text" v-model="experience" placeholder="Experience (seperate by ', ')" />
+
+        <b>Skills</b>
+        <input type="text" v-model="skills" placeholder="Skill (seperate by ', ')" />
+
+        <b>Languages</b>
+        <input type="text" v-model="languages" placeholder="Language (seperate by ', ')" />
       </div>
       <div class="style">
         <label for="textColor">Text Color</label>
-        <input type="color" v-bind="textColor" id="textColor" required />
+        <input type="color" v-model="textColor" id="textColor" required />
         <label for="backgroundColor">Background Color</label>
-        <input type="color" v-bind="backgroundColor" id="backgroundColor" required />
+        <input type="color" v-model="backgroundColor" id="backgroundColor" required />
         <label for="backgroundImage">Background Image</label>
-        <input type="url" v-bind="backgroundImage" id="backgroundImage" />
+        <input type="url" v-model="backgroundImage" id="backgroundImage" />
         <label for="fontSize">Font Size</label>
-        <input type="number" v-bind="fontSize" id="fontSize" required />
+        <input type="number" v-model="fontSize" id="fontSize" required />
         <label for="font">Font</label>
-        <input type="text" v-bind="font" id="font" required />
+        <input type="text" v-model="font" id="font" required />
       </div>
       <div class="media">
         <AddMedia v-if="adding" @stopChange="() => (adding = false)" @refreshPortfolio="emit('refreshPortfolio')" />

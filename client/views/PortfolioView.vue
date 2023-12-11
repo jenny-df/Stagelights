@@ -40,10 +40,10 @@ onBeforeMount(async () => {
     <div v-if="hasPortfolio" class="hasPortfolio">
       <div class="base">
         <menu v-if="belongsToSession">
-          <li><button class="btn-small pure-button" @click="() => (editing = true)">Edit</button></li>
+          <li><button class="pure-button" @click="() => (editing = true)">Edit</button></li>
           <li>
             <ChangeHeadshot v-if="changing" :pic="portfolio.headshot" @stopChange="() => (changing = false)" @refreshPortfolio="getPortfolio" />
-            <button v-else class="btn-small pure-button" @click="() => (changing = true)">Change headshot</button>
+            <button v-else class="pure-button" @click="() => (changing = true)">Change headshot</button>
           </li>
         </menu>
       </div>
@@ -76,6 +76,7 @@ menu {
   gap: 1em;
   padding: 0;
   margin: 0;
+  margin-left: 45%;
 }
 
 .timestamp {
@@ -85,10 +86,16 @@ menu {
   font-style: italic;
 }
 
+button {
+  background-color: #d77533;
+  color: white;
+}
+
 .base {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 40px;
 }
 
 .base article:only-child {
