@@ -22,7 +22,7 @@ async function removeConnection() {
       </RouterLink>
       <p>Connections since {{ props.connection.dateCreated }}</p>
       <menu>
-        <li><button @click="removeConnection()">Delete Connection</button></li>
+        <li><button @click="removeConnection()" class="pure-button button-error">Delete Connection</button></li>
       </menu>
     </div>
   </div>
