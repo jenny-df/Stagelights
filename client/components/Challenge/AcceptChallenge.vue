@@ -32,8 +32,8 @@ const emptyForm = () => {
   <h2>Challenge Accepted!</h2>
   <h4>{{ props.challenge.prompt }}</h4>
   <form @submit.prevent="acceptChallenge(content, mediaURLs)">
-    <textarea id="content" v-model="content" placeholder="Write text content here!" required> </textarea>
-    <textarea id="mediaURLs" v-model="mediaURLs" placeholder="Media URLs seperated by comma" required></textarea>
+    <textarea id="content" v-model="content" placeholder="Write text content here!" rows="5" required> </textarea>
+    <textarea id="mediaURLs" v-model="mediaURLs" placeholder="Media URLs seperated by comma and a space (must be publicly shared Google Drive files)" rows="3" required></textarea>
     <menu>
       <button type="submit" class="pure-button-primary pure-button">Create Post</button>
       <button @click="() => emit('doneAccept')" class="pure-button-primary pure-button">Cancel</button>
@@ -54,9 +54,12 @@ form {
 textarea {
   font-family: inherit;
   font-size: inherit;
-  height: 6em;
   padding: 0.5em;
   border-radius: 4px;
   resize: none;
+}
+button {
+  margin: 8px;
+  border-radius: 4px;
 }
 </style>

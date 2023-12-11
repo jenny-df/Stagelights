@@ -38,27 +38,29 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div class="challenge" v-if="loaded && !alreadyAccepted">
-    <ChallengeBody
-      v-if="!accept && !suggest"
-      @acceptChallenge="
-        () => {
-          accept = true;
-          suggest = false;
-        }
-      "
-      @suggestChallegne="
-        () => {
-          accept = false;
-          suggest = true;
-        }
-      "
-      :challenge="challenge"
-    />
-    <AcceptChallenge v-else-if="accept && !suggest" :challenge="challenge" @doneAccept="() => (accept = false)" @refreshChallenge="getChallenge()" @refreshPosts="emit('refreshPosts')" />
-    <SuggestChallenge v-else-if="!accept && suggest" @doneSuggest="() => (suggest = false)" @refreshChallenge="getChallenge()" />
+  <div class="challenge-outer" v-if="loaded && !alreadyAccepted">
+    <div style="margin: auto; width: 70%">
+      <ChallengeBody
+        v-if="!accept && !suggest"
+        @acceptChallenge="
+          async () => {
+            await getChallenge();
+          }
+        "
+        @suggestChallegne="
+          () => {
+            accept = false;
+            suggest = true;
+          }
+        "
+        :challenge="challenge"
+      />
+      <AcceptChallenge v-else-if="accept && !suggest" :challenge="challenge" @doneAccept="() => (accept = false)" @refreshChallenge="getChallenge()" @refreshPosts="emit('refreshPosts')" />
+
+      <SuggestChallenge v-else-if="!accept && suggest" @doneSuggest="() => (suggest = false)" @refreshChallenge="getChallenge()" />
+    </div>
   </div>
-  <div class="challenge" v-if="loaded && alreadyAccepted">
+  <div class="challenge-outer" v-if="loaded && alreadyAccepted">
     <h2>Already accepted today's challenge</h2>
   </div>
 
@@ -66,6 +68,19 @@ onBeforeMount(async () => {
 </template>
 
 <style scoped>
+.challenge-outer {
+  margin-top: 50px;
+  background-color: var(--base-bg);
+  border-radius: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  min-width: 100%;
+  text-align: center;
+}
+
 section {
   display: flex;
   flex-direction: column;

@@ -39,9 +39,12 @@ onBeforeMount(async () => {
   <form @submit.prevent="editPost(content)" v-if="loaded && categories.length">
     <p class="author">{{ props.post.author }}</p>
     <textarea id="content" v-model="content" placeholder="New content" required> </textarea>
-    <select name="category" id="category" v-model="category">
-      <option :value="c._id" v-for="c in categories" :key="c._id" :selected="category === c._id.toString()">{{ c.name }}</option>
-    </select>
+    <div style="min-width: 100%">
+      <div class="row">
+        <p style="font-weight: bold" class="categoryOption">Category of post:</p>
+        <div v-for="c in categories" :key="c._id" class="categoryOption"><input type="radio" v-model="category" :value="c._id" :checked="category._id === c._id.toString()" /> {{ c.name }}</div>
+      </div>
+    </div>
     <textarea id="urls" v-model="mediaURLs" placeholder="New media" required readonly> </textarea>
     <div class="base">
       <menu>
@@ -67,7 +70,12 @@ form {
   flex-direction: column;
   gap: 0.5em;
 }
-
+.categoryOption {
+  float: left;
+  width: 15%;
+  padding: 0;
+  margin: 10px;
+}
 textarea {
   font-family: inherit;
   font-size: inherit;

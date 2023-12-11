@@ -17,7 +17,7 @@ const proposeChallenge = async (prompt: string) => {
 <template>
   <h2>Suggest a Challenge</h2>
   <form @submit.prevent="proposeChallenge(prompt)">
-    <input type="text" v-model="prompt" required />
+    <textarea v-model="prompt" placeholder="prompt" required></textarea>
     <menu>
       <button type="submit" class="pure-button-primary pure-button">Suggest</button>
       <button @click="() => emit('doneSuggest')" class="pure-button-primary pure-button">Cancel</button>
@@ -25,4 +25,18 @@ const proposeChallenge = async (prompt: string) => {
   </form>
 </template>
 
-<style scoped></style>
+<style scoped>
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  height: 3em;
+  padding: 0.5em;
+  width: 100%;
+  border-radius: 4px;
+  resize: none;
+}
+button {
+  margin: 8px;
+  border-radius: 4px;
+}
+</style>
