@@ -3,18 +3,18 @@ import { createRouter, createWebHistory } from "vue-router";
 
 import { useUserStore } from "@/stores/user";
 import ApplicationsView from "../views/ApplicationsView.vue";
-import HomeView from "../views/HomeView.vue";
-import LoginView from "../views/LoginView.vue";
-import NotFoundView from "../views/NotFoundView.vue";
-import ManageOpportunitiesView from "../views/ManageOpportunitiesView.vue";
 import ConnectionsView from "../views/ConnectionsView.vue";
 import FolderView from "../views/FolderView.vue";
+import HomeView from "../views/HomeView.vue";
+import LoginView from "../views/LoginView.vue";
+import ManageOpportunitiesView from "../views/ManageOpportunitiesView.vue";
 import NetworkingView from "../views/NetworkingView.vue";
+import NotFoundView from "../views/NotFoundView.vue";
+import OpportunitiesView from "../views/OpportunitiesView.vue";
 import PortfolioView from "../views/PortfolioView.vue";
 import ProfileView from "../views/ProfileView.vue";
 import SettingView from "../views/SettingView.vue";
 import SignupView from "../views/SignupView.vue";
-import OpportunitiesView from "../views/OpportunitiesView.vue";
 
 const routes = [
   {
@@ -94,7 +94,8 @@ const routes = [
     name: "Signup",
     component: SignupView,
     meta: { requiresAuth: false },
-    beforeEnter: (to, from) => {
+    beforeEnter: (to: any, from: any) => {
+      console.log(to, from);
       const { isLoggedIn } = storeToRefs(useUserStore());
       if (isLoggedIn.value) {
         return { name: "Home" };
@@ -106,7 +107,8 @@ const routes = [
     name: "Logout",
     component: LoginView,
     meta: { requiresAuth: false },
-    beforeEnter: async (to, from) => {
+    beforeEnter: async (to: any, from: any) => {
+      console.log(to, from);
       const { isLoggedIn } = storeToRefs(useUserStore());
       if (isLoggedIn.value) {
         const { logoutUser } = useUserStore();

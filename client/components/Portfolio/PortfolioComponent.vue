@@ -1,56 +1,124 @@
 <script setup lang="ts">
-import { ref } from "vue";
 const props = defineProps(["portfolio"]);
-const style = ref(props.portfolio.style);
-const portfolio = ref(props.portfolio);
-const user = ref(props.portfolio.user);
 </script>
 <template>
-  <div
-    class="portfolioBoarder"
-    :style="{ color: style.textColor, fontSize: style.fontSize + 'px', backgroundColor: style.backgroundColor, backgroundImage: style.backgroundImage, fontFamily: style.font }"
-  >
-    <div class="personalInfo">
-      <iframe :src="portfolio.headshot"></iframe>
-      <h3>{{ user.name }}</h3>
-      <p>Contact at {{ user.email }}</p>
-      <p v-if="user.state">{{ user.city }}, {{ user.state }}, {{ user.country }}</p>
-      <p v-else>{{ user.city }}, {{ user.country }}</p>
-      <p>{{ portfolio.intro }}</p>
-    </div>
-    <div class="professionalInfo">
-      <div v-if="portfolio.info.education">
-        <b>Education</b>
-        <ul>
-          <li v-for="edu in portfolio.info.education" :key="edu">{{ edu }}</li>
-        </ul>
+  <div class="row">
+    <div
+      class="portfolioBoarder"
+      :style="{
+        color: props.portfolio.style.textColor,
+        fontSize: props.portfolio.style.fontSize + 'px',
+        backgroundColor: props.portfolio.style.backgroundColor,
+        backgroundImage: props.portfolio.style.backgroundImage,
+        fontFamily: props.portfolio.style.font,
+      }"
+    >
+      <div class="column-left">
+        <iframe :src="props.portfolio.headshot" scrolling="no" style="pointer-events: none" allowfullscreen="false" height="240" width="240" class="profilePic"></iframe>
+        <div class="professionalInfo">
+          <div v-if="props.portfolio.info.education.length">
+            <b>Education: </b>
+            <ul>
+              <li v-for="edu in props.portfolio.info.education" :key="edu">{{ edu }}</li>
+            </ul>
+          </div>
+          <p v-else><b>Education: </b>None</p>
+          <div v-if="props.portfolio.info.experience.length">
+            <b>Experience: </b>
+            <ul>
+              <li v-for="exp in props.portfolio.info.experience" :key="exp">{{ exp }}</li>
+            </ul>
+          </div>
+          <p v-else><b>Experience: </b>None</p>
+          <div v-if="props.portfolio.info.skills.length">
+            <b>Skills: </b>
+            <ul>
+              <li v-for="skill in props.portfolio.info.skills" :key="skill">{{ skill }}</li>
+            </ul>
+          </div>
+          <p v-else><b>Skills: </b>None</p>
+          <div v-if="props.portfolio.info.languages.length">
+            <b>Languages: </b>
+            <ul>
+              <li v-for="lang in props.portfolio.info.languages" :key="lang">{{ lang }}</li>
+            </ul>
+          </div>
+          <p v-else><b>Languages: </b>None</p>
+        </div>
       </div>
-      <div v-if="portfolio.info.experience">
-        <b>Experience</b>
-        <ul>
-          <li v-for="exp in portfolio.info.experience" :key="exp">{{ exp }}</li>
-        </ul>
+      <div class="column-right">
+        <div class="personalInfo">
+          <h1>{{ props.portfolio.user.name }}</h1>
+          <p>Contact at {{ props.portfolio.user.email }}</p>
+          <p v-if="props.portfolio.user.state">{{ props.portfolio.user.city }}, {{ props.portfolio.user.state }}, {{ props.portfolio.user.country }}</p>
+          <p v-else>{{ props.portfolio.user.city }}, {{ props.portfolio.user.country }}</p>
+          <p>{{ props.portfolio.intro }}</p>
+        </div>
+        <div class="media">
+          <h2>Media:</h2>
+          <iframe v-for="url in props.portfolio.media" :src="url" :key="url" width="100" height="100" style="float: left"></iframe>
+        </div>
       </div>
-      <div v-if="portfolio.info.skills">
-        <b>Skills</b>
-        <ul>
-          <li v-for="skill in portfolio.info.skills" :key="skill">{{ skill }}</li>
-        </ul>
-      </div>
-      <div v-if="portfolio.info.languages">
-        <b>Languages</b>
-        <ul>
-          <li v-for="lang in portfolio.info.languages" :key="lang">{{ lang }}</li>
-        </ul>
-      </div>
-    </div>
-    <div class="media">
-      <iframe v-for="url in portfolio.media" :src="url" :key="url"></iframe>
     </div>
   </div>
 </template>
 
 <style scoped>
+.row {
+  min-width: 100%;
+}
+
+li {
+  list-style-type: none;
+}
+
+.column-left {
+  float: left;
+  margin-left: 40px;
+  margin-top: 40px;
+  width: 30%;
+}
+
+.column-right {
+  margin-top: 80px;
+  float: left;
+  width: 60%;
+  background: lightgray;
+  border-radius: 8px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.65);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  overflow: scroll;
+  overflow-wrap: break-word;
+}
+
+.portfolioBoarder {
+  content: "";
+  display: table;
+  clear: both;
+  border: 3px solid;
+  border-color: black;
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 40px;
+  min-height: 600px;
+}
+
+.professionalInfo {
+  background: lightgray;
+  border-radius: 8px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.65);
+  margin-top: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  width: 80%;
+  text-align: center;
+  overflow: scroll;
+  overflow-wrap: break-word;
+}
+
 p {
   margin: 0em;
 }
