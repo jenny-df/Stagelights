@@ -47,14 +47,51 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <div v-if="loaded">
-    <iframe :src="curProfilePic" scrolling="no" style="pointer-events: none" allowfullscreen="false"></iframe>
-    <h1>{{ curName }}</h1>
-    <h3>{{ types }}</h3>
-    <p>Email: {{ curEmail }}</p>
-    <p v-if="curState !== ''">Location: {{ curCity }}, {{ curState }}, {{ curCountry }}</p>
-    <p v-else>Location: {{ curCity }}, {{ curCountry }}</p>
-    <p v-if="currentID === id && types.includes('Actor')">Applause: {{ applause }} (only visible to you)</p>
+  <div class="row">
+    <div class="column-left">
+      <iframe :src="curProfilePic" scrolling="no" style="pointer-events: none" allowfullscreen="false" height="300"></iframe>
+    </div>
+    <div class="column-right">
+      <div v-if="loaded">
+        <h1>{{ curName }}</h1>
+        <h3>{{ types }}</h3>
+        <p>Email: {{ curEmail }}</p>
+        <p v-if="curState !== ''">Location: {{ curCity }}, {{ curState }}, {{ curCountry }}</p>
+        <p v-else>Location: {{ curCity }}, {{ curCountry }}</p>
+        <p v-if="currentID === id && types.includes('Actor')">Applause: {{ applause }} (only visible to you)</p>
+        <RouterLink :to="{ name: 'Portfolio', params: { id: id, name: curName } }"> <a> Portfolio </a> </RouterLink>
+      </div>
+      <p v-else>Loading...</p>
+    </div>
   </div>
-  <p v-else>Loading...</p>
 </template>
+<style scoped>
+* {
+  box-sizing: border-box;
+}
+.row {
+  content: "";
+  display: table;
+  clear: both;
+  min-width: 100%;
+}
+
+.column-left {
+  float: left;
+  width: 26%;
+  padding: 50px;
+  text-align: center;
+}
+.column-right {
+  float: left;
+  width: 40%;
+  padding: 70px;
+  text-align: left;
+}
+.seperation-left {
+  border-left: 5px solid grey;
+}
+.seperation-right {
+  border-right: 5px solid grey;
+}
+</style>

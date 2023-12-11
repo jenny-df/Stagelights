@@ -25,8 +25,8 @@ const emptyForm = () => {
 <template>
   <div>
     <form @submit.prevent="createFolder(name)">
-      <input type="text" name="name" v-model="name" placeholder="Folder name" required />
-      <button type="submit" class="pure-button-primary pure-button">Add Repertoire Folder</button>
+      <input type="text" name="name" v-model="name" placeholder="Folder Name" required />
+      <button type="submit" class="pure-button-primary pure-button">+ Repertoire Folder</button>
     </form>
   </div>
 </template>
