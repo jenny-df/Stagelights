@@ -1,29 +1,35 @@
 <script setup lang="ts">
-import { ref, Ref } from "vue";
+import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
 
 const props = defineProps(["op"]);
-const emit = defineEmits(["updated", "cancel-edit"]);
+const emit = defineEmits(["updated", "cancel-edit", "ripple-cancel-edit"]);
 
 const title = ref(props.op.title);
 const description = ref(props.op.description);
-const startsOn: Ref<Date> = ref(props.op.startOn);
-const endsOn: Ref<Date> = ref(props.op.endsOn);
+const startsOn = ref(new Date(props.op.startOn).toJSON().slice(0, 10));
+console.log(startsOn);
+const endsOn = ref(new Date(props.op.endsOn).toJSON().slice(0, 10));
+
 const physicalReq = ref(props.op.requirements.physical.join(", "));
 const skillReq = ref(props.op.requirements.skill.join(", "));
 const locationReq = ref(props.op.requirements.location);
 
-const editOp = async (description: string, startsOn: Date, endsOn: Date, physicalReq: string, skillReq: string, locationReq: string) => {
+const editOp = async (description: string, startOn: string, endsOn: string, physicalReq: string, skillReq: string, locationReq: string) => {
   const sepPhysicalReqs = physicalReq.split(", ");
   const sepSkillReqs = skillReq.split(", ");
   try {
     await fetchy("/api/opportunities", "PATCH", {
-      body: { id: props.op._id, update: { description, startsOn, endsOn, requirements: { physical: sepPhysicalReqs, skill: sepSkillReqs, location: locationReq } } },
+      body: {
+        id: props.op._id,
+        update: { description, startOn: new Date(startOn), endsOn: new Date(endsOn), requirements: { physical: sepPhysicalReqs, skill: sepSkillReqs, location: locationReq } },
+      },
     });
   } catch (_) {
     return;
   }
   emit("updated");
+  emit("ripple-cancel-edit");
 };
 </script>
 
@@ -32,7 +38,7 @@ const editOp = async (description: string, startsOn: Date, endsOn: Date, physica
     <h1 style="text-align: center; margin-right: 15%">Editting:</h1>
     <form @submit.prevent="editOp(description, startsOn, endsOn, physicalReq, skillReq, locationReq)">
       <label for="title" style="font-weight: bold">Create a new opportunity</label>
-      <input type="text" id="title" v-model="title" placeholder="Title" readonly required />
+      <input type="text" id="title" v-model="title" placeholder="Title" readonly disabled required />
       <textarea id="description" v-model="description" placeholder="Description" required> </textarea>
       <label for="startsOn" style="font-weight: bold">Opportunity starts on:</label>
       <input type="date" id="startsOn" v-model="startsOn" required />

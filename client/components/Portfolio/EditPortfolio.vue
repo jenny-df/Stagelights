@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { fetchy } from "../../utils/fetchy";
+import AddMedia from "./AddMedia.vue";
 
 const props = defineProps(["portfolio"]);
 const portfolio = ref(props.portfolio);
 const user = ref(props.portfolio.user);
-const emit = defineEmits(["editPortfolio", "refreshPortfolio"]);
+const emit = defineEmits(["refresh-portfolio", "cancel-edit"]);
 
 const intro = ref(props.portfolio.intro);
 
@@ -49,96 +50,163 @@ const editPorfolio = async (
   } catch (e) {
     return;
   }
-  emit("refreshPortfolio");
+  emit("refresh-portfolio");
 };
 
 const deleteMedia = async (id: string) => {
   try {
-    await fetchy(`/api/media/remove`, "PATCH", { body: { media: id } });
+    await fetchy(`/api/portfolio/media/remove`, "PATCH", { body: { media: id } });
   } catch (e) {
     return;
   }
-  emit("refreshPortfolio");
+  emit("refresh-portfolio");
 };
 </script>
 
 <template>
   <form @submit.prevent="editPorfolio(intro, backgroundColor, backgroundImage, font, fontSize, textColor, education, skills, experience, languages)">
-    <div class="portfolioBoarder" :style="{ color: textColor, fontSize: fontSize + 'px', backgroundColor: backgroundColor, backgroundImage: backgroundImageUsed, fontFamily: font }">
-      <div class="personalInfo">
-        <iframe :src="portfolio.headshot"></iframe>
-        <h3>{{ user.name }}</h3>
-        <p>Contact at {{ user.email }}</p>
-        <p v-if="user.state">{{ user.city }}, {{ user.state }}, {{ user.country }}</p>
-        <p v-else>{{ user.city }}, {{ user.country }}</p>
-        <textarea v-model="intro" placeholder="Intro for your portfolio"></textarea>
-      </div>
-      <div class="professionalInfo">
-        <b>Education</b>
-        <input type="text" v-model="education" placeholder="Education (seperate by ', ')" />
-
-        <b>Experience</b>
-        <input type="text" v-model="experience" placeholder="Experience (seperate by ', ')" />
-
-        <b>Skills</b>
-        <input type="text" v-model="skills" placeholder="Skill (seperate by ', ')" />
-
-        <b>Languages</b>
-        <input type="text" v-model="languages" placeholder="Language (seperate by ', ')" />
-      </div>
-      <div class="style">
-        <label for="textColor">Text Color</label>
-        <input type="color" v-model="textColor" id="textColor" required />
-        <label for="backgroundColor">Background Color</label>
-        <input type="color" v-model="backgroundColor" id="backgroundColor" required />
-        <label for="backgroundImage">Background Image</label>
-        <input type="url" v-model="backgroundImage" id="backgroundImage" />
-        <label for="fontSize">Font Size</label>
-        <input type="number" v-model="fontSize" id="fontSize" required />
-        <label for="font">Font</label>
-        <input type="text" v-model="font" id="font" required />
-      </div>
-      <div class="media">
-        <AddMedia v-if="adding" @stopChange="() => (adding = false)" @refreshPortfolio="emit('refreshPortfolio')" />
-        <button v-else @click="() => (adding = true)">Add Media</button>
-        <div v-for="m in portfolio.media" :key="m._id">
-          <iframe :src="m.url"></iframe>
-          <button @click="deleteMedia(m._id)">x</button>
+    <div class="row">
+      <div
+        class="portfolioBoarder"
+        :style="{
+          color: props.portfolio.style.textColor,
+          fontSize: props.portfolio.style.fontSize + 'px',
+          backgroundColor: props.portfolio.style.backgroundColor,
+          backgroundImage: backgroundImageUsed,
+          fontFamily: props.portfolio.style.font,
+        }"
+      >
+        <div class="column-left">
+          <iframe :src="props.portfolio.headshot" scrolling="no" style="pointer-events: none" allowfullscreen="false" height="240" width="240" class="profilePic"></iframe>
+          <div class="professionalInfo">
+            <div class="textarea-input">
+              <b style="margin-right: 5px">Education</b>
+              <textarea v-model="education" placeholder="Education (seperate by ', ')" style="margin-top: 10px" height="2"></textarea>
+            </div>
+            <br />
+            <div class="textarea-input">
+              <b style="margin-right: 5px">Experience</b>
+              <textarea v-model="experience" placeholder="Experience (seperate by ', ')" style="margin-top: 10px"></textarea>
+            </div>
+            <br />
+            <div class="textarea-input">
+              <b style="margin-right: 5px">Skills</b>
+              <textarea v-model="skills" placeholder="Skill (seperate by ', ')" style="margin-top: 10px"></textarea>
+            </div>
+            <br />
+            <div class="textarea-input">
+              <b style="margin-right: 5px">Languages</b>
+              <textarea v-model="languages" placeholder="Language (seperate by ', ')" style="margin-top: 10px"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="column-right">
+          <div class="personalInfo">
+            <h1>{{ user.name }}</h1>
+            <p>Contact at {{ user.email }}</p>
+            <p v-if="props.portfolio.user.state">{{ user.city }}, {{ user.state }}, {{ user.country }}</p>
+            <p v-else>{{ user.city }}, {{ user.country }}</p>
+            <textarea v-model="intro" placeholder="Intro for your portfolio" style="height: 60px; width: 400px"></textarea>
+          </div>
+          <div class="style">
+            <label for="textColor" style="margin-right: 5px">Text Color</label>
+            <input type="color" v-model="textColor" id="textColor" style="margin-top: 10px" required />
+            <br />
+            <label for="backgroundColor" style="margin-right: 5px">Background Color</label>
+            <input type="color" v-model="backgroundColor" id="backgroundColor" style="margin-top: 10px" required />
+            <br />
+            <label for="backgroundImage" style="margin-right: 5px">Background Image</label>
+            <input type="url" v-model="backgroundImage" id="backgroundImage" style="margin-top: 10px" />
+            <br />
+            <label for="fontSize" style="margin-right: 5px">Font Size</label>
+            <input type="number" v-model="fontSize" id="fontSize" style="margin-top: 10px" required />
+            <br />
+            <label for="font" style="margin-right: 5px">Font</label>
+            <input type="text" v-model="font" id="font" style="margin-top: 10px" required />
+            <br />
+          </div>
+          <div class="media" style="margin-top: 10px">
+            <AddMedia v-if="adding" @stopChange="() => (adding = false)" @refreshPortfolio="emit('refresh-portfolio')" />
+            <button v-else @click="() => (adding = true)" class="pure-button" style="margin-bottom: 20px">Add Media</button>
+            <div v-for="m in portfolio.media" :key="m._id">
+              <button @click="deleteMedia(m._id)">x</button><br />
+              <iframe :src="m.url"></iframe>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="base">
-      <menu>
-        <li><button class="btn-small pure-button-primary pure-button" type="submit">Save</button></li>
-        <li><button class="btn-small pure-button" @click="emit('editPortfolio')">Cancel</button></li>
-      </menu>
+    <div style="width: 50%; margin: auto">
+      <div class="base" style="margin-bottom: 40px; margin-top: 40px; margin-left: 40%">
+        <menu>
+          <li><button class="pure-button-primary pure-button" type="submit">Save</button></li>
+          <li>
+            <button class="pure-button" @click="emit('cancel-edit')">Cancel</button>
+          </li>
+        </menu>
+      </div>
     </div>
   </form>
 </template>
 
 <style scoped>
-form {
-  background-color: var(--base-bg);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
+.row {
+  min-width: 100%;
 }
 
-textarea {
-  font-family: inherit;
-  font-size: inherit;
-  height: 6em;
-  border-radius: 4px;
-  resize: none;
+li {
+  list-style-type: none;
+}
+
+.column-left {
+  float: left;
+  margin-left: 40px;
+  margin-top: 40px;
+  width: 30%;
+}
+
+.column-right {
+  margin-top: 80px;
+  float: left;
+  width: 60%;
+  background: lightgray;
+  border-radius: 8px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.65);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  overflow: scroll;
+  overflow-wrap: break-word;
+}
+
+.portfolioBoarder {
+  content: "";
+  display: table;
+  clear: both;
+  border: 3px solid;
+  border-color: black;
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 40px;
+  min-height: 600px;
+}
+
+.professionalInfo {
+  background: lightgray;
+  border-radius: 8px;
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.65);
+  margin-top: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+
+  width: 80%;
+  text-align: center;
+  overflow: scroll;
+  overflow-wrap: break-word;
 }
 
 p {
   margin: 0em;
-}
-
-.author {
-  font-weight: bold;
-  font-size: 1.2em;
 }
 
 menu {
@@ -150,16 +218,32 @@ menu {
   margin: 0;
 }
 
+.timestamp {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.9em;
+  font-style: italic;
+}
+
 .base {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.timestamp {
-  display: flex;
-  justify-content: flex-end;
-  font-size: 0.9em;
-  font-style: italic;
+.base article:only-child {
+  margin-left: auto;
+}
+
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  border-radius: 4px;
+  resize: none;
+}
+
+button {
+  background-color: #d77533;
+  color: white;
 }
 </style>

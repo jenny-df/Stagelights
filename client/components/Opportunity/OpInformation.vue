@@ -10,11 +10,12 @@ const endsOn = ref(new Date(props.op.endsOn).getFullYear() + "-" + (new Date(pro
 const editting = ref(false);
 const deleteOp = async () => {
   try {
-    await fetchy(`/api/opportunities/${props.op._id}`, "GET");
-    emit("refresh-ops");
+    await fetchy(`/api/opportunities/${props.op._id}`, "DELETE");
   } catch {
     return;
   }
+  emit("refresh-ops");
+  emit("back");
 };
 </script>
 
@@ -53,7 +54,7 @@ const deleteOp = async () => {
       </menu>
     </div>
   </div>
-  <EditOp @cancel-edit="() => (editting = false)" @updated="emit('refresh-ops')" :op="props.op" v-else />
+  <EditOp @cancel-edit="() => (editting = false)" @updated="emit('refresh-ops')" @ripple-cancel-edit="emit('back')" :op="props.op" v-else />
 </template>
 
 <style scoped>

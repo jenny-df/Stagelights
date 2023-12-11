@@ -25,19 +25,16 @@ const currentRouteName = computed(() => currentRoute.name);
       <li>
         <RouterLink :to="{ name: 'Network' }" :class="{ underline: currentRouteName == 'Network' }"> Network </RouterLink>
       </li>
-      <li v-if="isDirector">
+      <li v-if="isDirector || isAdmin">
         <RouterLink :to="{ name: 'ManageOpportunities' }" :class="{ underline: currentRouteName == 'ManageOpportunities' }"> Manage Opportunities </RouterLink>
       </li>
-      <li>
+      <li v-if="isActor || isAdmin">
         <RouterLink :to="{ name: 'Opportunities' }" :class="{ underline: currentRouteName == 'Opportunities' }"> Opportunities </RouterLink>
-      </li>
-      <li>
-        <RouterLink :to="{ name: 'Applications' }" :class="{ underline: currentRouteName == 'Applications' }"> Applications </RouterLink>
       </li>
       <li>
         <RouterLink :to="{ name: 'Profile', params: { id: currentID, name: currentName } }" :class="{ underline: currentRouteName == 'Profile' }"> Profile </RouterLink>
       </li>
-      <li>
+      <li v-if="isActor">
         <RouterLink :to="{ name: 'Portfolio', params: { id: currentID, name: currentName } }" :class="{ underline: currentRouteName == 'Portfolio' }"> Portfolio </RouterLink>
       </li>
       <li>

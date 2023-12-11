@@ -194,7 +194,7 @@ export default class OpportunityConcept {
    * @throws NotAllowedError if trying to update a readonly field
    */
   private sanitizeUpdate(update: Partial<OpportunityDoc>) {
-    const allowedUpdates = ["description", "startOn", "endOn", "requirements"];
+    const allowedUpdates = ["description", "startOn", "endsOn", "requirements"];
     for (const key in update) {
       if (!allowedUpdates.includes(key)) {
         throw new NotAllowedError(`Cannot update '${key}' field!`);
@@ -239,7 +239,7 @@ export default class OpportunityConcept {
    */
   private checkDateValidity(start: Date, end: Date) {
     if (start >= end) {
-      throw new NotAllowedError("{0} is greater than or equal to {1} which isn't a valid input!", start, end);
+      throw new NotAllowedError("{0} is greater than or equal to {1} which isn't a valid input!", start.toJSON().slice(0, 10), end.toJSON().slice(0, 10));
     }
   }
 }

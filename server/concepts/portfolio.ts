@@ -141,7 +141,8 @@ export default class PortfolioConcept {
     const stringMedia = portfolio.media.map((id) => id.toString());
     const index = stringMedia.indexOf(media.toString());
     if (index !== -1) {
-      return portfolio.media.splice(index, 1);
+      portfolio.media.splice(index, 1);
+      return portfolio.media;
     }
     throw new BadValuesError("The media given doesn't exist in the media of the portfolio");
   }

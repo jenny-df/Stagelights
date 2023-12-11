@@ -2,7 +2,6 @@ import { storeToRefs } from "pinia";
 import { createRouter, createWebHistory } from "vue-router";
 
 import { useUserStore } from "@/stores/user";
-import ApplicationsView from "../views/ApplicationsView.vue";
 import ConnectionsView from "../views/ConnectionsView.vue";
 import FolderView from "../views/FolderView.vue";
 import HomeView from "../views/HomeView.vue";
@@ -45,12 +44,6 @@ const routes = [
     name: "ManageOpportunities",
     component: ManageOpportunitiesView,
     meta: { requiresAuth: true, isDirector: true },
-  },
-  {
-    path: "/applications",
-    name: "Applications",
-    component: ApplicationsView,
-    meta: { requiresAuth: true },
   },
   {
     path: "/profile/:id/:name",

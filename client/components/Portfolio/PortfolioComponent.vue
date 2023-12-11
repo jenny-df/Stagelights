@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { ref } from "vue";
 const props = defineProps(["portfolio"]);
+const backgroundImageUsed = ref("url(" + props.portfolio.style.backgroundImage + ")");
+console.log(props.portfolio.media);
 </script>
 <template>
   <div class="row">
@@ -9,7 +12,7 @@ const props = defineProps(["portfolio"]);
         color: props.portfolio.style.textColor,
         fontSize: props.portfolio.style.fontSize + 'px',
         backgroundColor: props.portfolio.style.backgroundColor,
-        backgroundImage: props.portfolio.style.backgroundImage,
+        backgroundImage: backgroundImageUsed,
         fontFamily: props.portfolio.style.font,
       }"
     >
@@ -56,7 +59,7 @@ const props = defineProps(["portfolio"]);
         </div>
         <div class="media">
           <h2>Media:</h2>
-          <iframe v-for="url in props.portfolio.media" :src="url" :key="url" width="100" height="100" style="float: left"></iframe>
+          <iframe v-for="media in props.portfolio.media" :src="media.url" :key="media._id" width="200" height="200" style="float: left; margin-left: 20px"></iframe>
         </div>
       </div>
     </div>

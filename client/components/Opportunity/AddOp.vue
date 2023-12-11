@@ -11,12 +11,12 @@ const skillReq = ref("");
 const locationReq = ref("");
 const emit = defineEmits(["refreshOps", "cancel-add"]);
 
-const createOp = async (title: string, description: string, startsOn: Date, endsOn: Date, physicalReq: string, skillReq: string, locationReq: string) => {
+const createOp = async (title: string, description: string, startOn: Date, endsOn: Date, physicalReq: string, skillReq: string, locationReq: string) => {
   const sepPhysicalReqs = physicalReq.split(", ");
   const sepSkillReqs = skillReq.split(", ");
   try {
     await fetchy("/api/opportunities", "POST", {
-      body: { title, description, startsOn, endsOn, requirements: { physical: sepPhysicalReqs, skill: sepSkillReqs, location: locationReq } },
+      body: { title, description, startOn, endsOn, requirements: { physical: sepPhysicalReqs, skill: sepSkillReqs, location: locationReq } },
     });
   } catch (_) {
     return;
