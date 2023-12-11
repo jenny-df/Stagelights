@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
 import { useUserStore } from "../../stores/user";
 import { fetchy } from "../../utils/fetchy";
 
@@ -44,6 +44,19 @@ onBeforeMount(async () => {
   await getInfo();
   loaded.value = true;
 });
+
+watch(
+  () => props.user,
+  async (newId, oldId) => {
+    // Check if the newId is different from the oldId, then update data
+    if (newId !== oldId) {
+      loaded.value = false;
+      id.value = newId;
+      await getInfo();
+      loaded.value = true;
+    }
+  },
+);
 </script>
 
 <template>

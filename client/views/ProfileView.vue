@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useUserStore } from "@/stores/user";
 import { storeToRefs } from "pinia";
-import { Ref, onBeforeMount, ref } from "vue";
+import { Ref, onBeforeMount, ref, watch } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 import addFolder from "../components/Profile/AddFolder.vue";
 import ConnectionPreview from "../components/Profile/ConnectionPreview.vue";
@@ -31,6 +31,20 @@ onBeforeMount(async () => {
   await loadFolderInfo();
   loaded.value = true;
 });
+
+watch(
+  () => route.params.id,
+  async (newId, oldId) => {
+    // Check if the newId is different from the oldId, then update data
+    if (newId !== oldId) {
+      loaded.value = false;
+      id.value = newId;
+      await loadFolderInfo();
+      isSessionUser.value = id.value === currentID.value;
+      loaded.value = true;
+    }
+  },
+);
 </script>
 
 <template>

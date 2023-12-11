@@ -7,3 +7,8 @@ import RequestListings from "../components/Network/RequestListings.vue";
     <RequestListings />
   </div>
 </template>
+<style scoped>
+div {
+  text-align: center;
+}
+</style>

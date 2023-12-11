@@ -46,7 +46,7 @@ async function getAllUsers() {
 
 function searchUsers() {
   if (searchedName.value) {
-    const matches = allUsers.value.filter((user) => user.name.includes(searchedName.value));
+    const matches = allUsers.value.filter((user) => user.name.toLowerCase().includes(searchedName.value.toLowerCase()));
     alreadyFriendSorter(matches);
   } else {
     canBeAdded.value = [];
