@@ -82,7 +82,6 @@ const routes = [
     component: LoginView,
     meta: { requiresAuth: false },
     beforeEnter: (to: any, from: any) => {
-      console.log(to, from);
       const { isLoggedIn } = storeToRefs(useUserStore());
       if (isLoggedIn.value) {
         return { name: "Home" };
@@ -95,7 +94,6 @@ const routes = [
     component: SignupView,
     meta: { requiresAuth: false },
     beforeEnter: (to: any, from: any) => {
-      console.log(to, from);
       const { isLoggedIn } = storeToRefs(useUserStore());
       if (isLoggedIn.value) {
         return { name: "Home" };
@@ -108,7 +106,6 @@ const routes = [
     component: LoginView,
     meta: { requiresAuth: false },
     beforeEnter: async (to: any, from: any) => {
-      console.log(to, from);
       const { isLoggedIn } = storeToRefs(useUserStore());
       if (isLoggedIn.value) {
         const { logoutUser } = useUserStore();
