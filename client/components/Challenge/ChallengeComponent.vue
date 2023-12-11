@@ -44,6 +44,8 @@ onBeforeMount(async () => {
         v-if="!accept && !suggest"
         @acceptChallenge="
           async () => {
+            accept = true;
+            suggest = false;
             await getChallenge();
           }
         "
