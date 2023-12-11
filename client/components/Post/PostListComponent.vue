@@ -39,15 +39,14 @@ onBeforeMount(async () => {
 </script>
 
 <template>
-  <section v-if="isLoggedIn">
-    <h2>Create a post:</h2>
+  <section v-if="isLoggedIn" style="margin-top: 50px">
     <CreatePostForm @refreshPosts="getPosts" />
   </section>
   <div class="row">
     <ChallengeComponent @refreshPosts="getPosts" />
   </div>
   <div class="row">
-    <h2 v-if="!searchAuthor">Posts:</h2>
+    <h1 v-if="!searchAuthor" style="margin: auto; width: 50%; padding-top: 40px; padding-bottom: 10px">Focused Posts:</h1>
     <h2 v-else>Posts by {{ searchAuthor }}:</h2>
   </div>
   <section class="posts" v-if="loaded && posts.length !== 0">

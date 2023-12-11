@@ -47,13 +47,18 @@ onBeforeMount(async () => {
 <template>
   <div v-if="loaded">
     <p class="author">{{ props.post.author }}</p>
-    <iframe v-for="url in props.post.media" :src="url" :key="url"></iframe>
-    <p>{{ props.post.content }}</p>
+    <menu v-if="props.post.author == currentName" style="float: right; margin-top: 20px; margin-right: 30px">
+      <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li>
+      <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
+    </menu>
+
+    <div class="row">
+      <p class="content">{{ props.post.content }}</p>
+    </div>
+    <div class="row">
+      <iframe v-for="url in props.post.media" :src="url" :key="url" height="300px" width="300px"></iframe>
+    </div>
     <div class="base">
-      <menu v-if="props.post.author == currentName">
-        <li><button class="btn-small pure-button" @click="emit('editPost', props.post._id)">Edit</button></li>
-        <li><button class="button-error btn-small pure-button" @click="deletePost">Delete</button></li>
-      </menu>
       <menu>
         <li><VoteButton :post="props.post" :upvote="true" :votes="upvotes" @refreshVotes="getVotes" /></li>
         <li><VoteButton :post="props.post" :upvote="false" :votes="downvotes" @refreshVotes="getVotes" /></li>
@@ -68,13 +73,24 @@ onBeforeMount(async () => {
 </template>
 
 <style scoped>
-p {
-  margin: 0em;
+.row {
+  content: "";
+  display: table;
+  clear: both;
+  min-width: 100%;
 }
-
+p {
+  padding: 0;
+}
+.content {
+  margin-bottom: 30px;
+}
 .author {
   font-weight: bold;
   font-size: 1.2em;
+  float: left;
+  margin-left: 30px;
+  margin-top: 20px;
 }
 
 menu {
