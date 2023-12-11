@@ -32,8 +32,8 @@ async function cancelRequest() {
         <h3>{{ props.user.name }}</h3>
       </RouterLink>
       <menu>
-        <li v-if="!props.sent"><button @click="sendRequest()">Send Connection Request</button></li>
-        <li v-else><button @click="cancelRequest()">Cancel Connection Request</button></li>
+        <li v-if="!props.sent"><button @click="sendRequest()" class="pure-button">Send Connection Request</button></li>
+        <li v-else><button @click="cancelRequest()" class="pure-button">Cancel Connection Request</button></li>
       </menu>
     </div>
   </div>

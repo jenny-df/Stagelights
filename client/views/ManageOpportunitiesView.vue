@@ -1,5 +1,10 @@
-<script></script>
+<script setup lang="ts">
+import YourOpportunities from "../components/Opportunity/YourOpportunities.vue";
+</script>
 
 <template>
-  <div></div>
+  <div>
+    <YourOpportunities />
+  </div>
 </template>
+<style scoped></style>

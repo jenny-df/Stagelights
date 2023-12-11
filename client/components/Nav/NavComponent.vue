@@ -5,7 +5,7 @@ import { computed } from "vue";
 import { RouterLink, useRoute } from "vue-router";
 
 const userStore = useUserStore();
-const { isLoggedIn, currentID, currentName, isActor, isAdmin } = storeToRefs(userStore);
+const { isLoggedIn, currentID, currentName, isActor, isAdmin, isDirector } = storeToRefs(userStore);
 const currentRoute = useRoute();
 const currentRouteName = computed(() => currentRoute.name);
 </script>
@@ -24,6 +24,9 @@ const currentRouteName = computed(() => currentRoute.name);
       </li>
       <li>
         <RouterLink :to="{ name: 'Network' }" :class="{ underline: currentRouteName == 'Network' }"> Network </RouterLink>
+      </li>
+      <li v-if="isDirector">
+        <RouterLink :to="{ name: 'ManageOpportunities' }" :class="{ underline: currentRouteName == 'ManageOpportunities' }"> Manage Opportunities </RouterLink>
       </li>
       <li>
         <RouterLink :to="{ name: 'Opportunities' }" :class="{ underline: currentRouteName == 'Opportunities' }"> Opportunities </RouterLink>
