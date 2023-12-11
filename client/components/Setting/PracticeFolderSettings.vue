@@ -31,13 +31,50 @@ onBeforeMount(async () => {
 
 <template>
   <div v-if="loaded" class="capacityChange">
-    <h2>Change Capacity</h2>
-    <form @submit.prevent="changeCapacity(capacity)" class="pure-form">
-      <fieldset>
-        <input type="number" placeholder="Capacity" v-model="capacity" min="10" required /><br />
-        <button type="submit" class="pure-button pure-button-primary">Update</button>
-      </fieldset>
-    </form>
+    <div class="row">
+      <div class="column-left seperation-right">
+        <h1>Folder Capacity</h1>
+      </div>
+      <div class="column-right">
+        <form @submit.prevent="changeCapacity(capacity)" class="pure-form">
+          <fieldset>
+            <input type="number" placeholder="Capacity" v-model="capacity" min="10" style="width: 30%" required /><br />
+            <button type="submit" class="pure-button">Update</button>
+          </fieldset>
+        </form>
+      </div>
+    </div>
   </div>
   <div v-else>Loading...</div>
 </template>
+<style scoped>
+* {
+  box-sizing: border-box;
+}
+.row {
+  margin-top: 50px;
+  content: "";
+  display: table;
+  clear: both;
+  min-width: 100%;
+  background-color: lightgrey;
+}
+
+.column-left {
+  float: left;
+  width: 40%;
+  padding: 50px;
+  text-align: center;
+}
+.column-right {
+  float: left;
+  width: 60%;
+  padding: 50px;
+}
+.seperation-left {
+  border-left: 5px solid grey;
+}
+.seperation-right {
+  border-right: 5px solid grey;
+}
+</style>
