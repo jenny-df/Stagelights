@@ -13,7 +13,7 @@ const currentRouteName = computed(() => currentRoute.name);
 <template>
   <nav v-if="isLoggedIn">
     <div class="title">
-      <img src="@/assets/images/logo.svg" />
+      <img src="@/assets/images/logo.png" width="60" height="70" />
       <RouterLink :to="{ name: 'Home' }">
         <h1>Stagelights</h1>
       </RouterLink>
@@ -53,7 +53,7 @@ const currentRouteName = computed(() => currentRoute.name);
 <style scoped>
 nav {
   padding: 1em 2em;
-  background-color: lightgray;
+  background-color: #d77533;
   display: flex;
   align-items: center;
 }
@@ -87,7 +87,7 @@ ul {
 }
 a {
   font-size: large;
-  color: black;
+  color: white;
   text-decoration: none;
 }
 </style>
