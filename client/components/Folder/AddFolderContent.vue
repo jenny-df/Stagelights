@@ -19,11 +19,40 @@ const AddFolderContent = async (url: string) => {
 </script>
 
 <template>
-  <form @submit.prevent="AddFolderContent(url)">
-    <input type="url" v-model="url" required />
-    <button type="submit" class="pure-button-primary pure-button">Add</button>
-  </form>
-  <button @click="() => emit('stopAdding')" class="pure-button-primary pure-button">Cancel</button>
+  <div style="text-align: right">
+    <div class="row">
+      <div class="column-left">
+        <form @submit.prevent="AddFolderContent(url)">
+          <input type="url" v-model="url" placeholder="URL" required />
+          <button type="submit" class="pure-button-primary pure-button" style="margin-left: 5px">Add</button>
+        </form>
+      </div>
+      <div class="column-right">
+        <button @click="() => emit('stopAdding')" class="pure-button-primary pure-button">Cancel</button>
+      </div>
+    </div>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+* {
+  box-sizing: border-box;
+}
+.row {
+  content: "";
+  display: table;
+  clear: left;
+  min-width: 40%;
+  padding-left: 75%;
+}
+
+.column-left {
+  float: left;
+  width: 90%;
+}
+.column-right {
+  float: left;
+  margin-left: 5px;
+  width: 5%;
+}
+</style>

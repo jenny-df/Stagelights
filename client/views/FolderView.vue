@@ -19,9 +19,9 @@ let loaded = ref(false);
 let belongsToSession = ref(false);
 
 const loadFolderInfo = async () => {
-  const practice = await fetchy("/api/practicefolder", "GET");
-  if (practice._id.toString() === folderId.value) {
-    folder.value = practice;
+  const practiceFolder = await fetchy("/api/practicefolder", "GET");
+  if (practiceFolder._id.toString() === folderId.value) {
+    folder.value = practiceFolder;
     practice.value = true;
     type.value = "Practice";
     belongsToSession.value = true;
