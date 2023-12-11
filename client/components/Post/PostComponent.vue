@@ -54,7 +54,7 @@ onBeforeMount(async () => {
 
     <div class="row">
       <p class="content">{{ props.post.content }}</p>
-      <p class="content"><b>Category: </b>{{ props.post.category }}</p>
+      <p class="content"><b>Category: </b>{{ props.post.category.name }}</p>
     </div>
     <div class="row">
       <iframe v-for="url in props.post.media" :src="url" :key="url" height="300px" width="300px"></iframe>

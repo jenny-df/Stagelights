@@ -32,6 +32,10 @@ const createPost = async (content: string, mediaURLs: string, category: string) 
 const getCategories = async () => {
   try {
     categories.value = await fetchy("/api/categories", "GET");
+    const i = categories.value.indexOf("Challenge");
+    if (i !== -1) {
+      categories.value.splice(i, 1);
+    }
   } catch (_) {
     return;
   }
