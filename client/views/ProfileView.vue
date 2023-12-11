@@ -36,27 +36,56 @@ onBeforeMount(async () => {
 <template>
   <div>
     <UserInfo :user="id" />
-    <ConnectionPreview :user="id" />
-    <div class="folders" v-if="loaded">
-      <h1>Folders</h1>
-      <div id="addFolder" v-if="isSessionUser">
-        <addFolder @refresh-folders="loadFolderInfo" />
+
+    <div class="outer-row">
+      <div class="outer-column-left">
+        <ConnectionPreview :user="id" />
       </div>
-      <div v-for="folder in repertoireFolders" :key="folder._id">
-        <RouterLink :to="{ name: 'Folder', params: { id: folder._id } }">
-          <FolderCard :folder="folder" :practice="false" />
-        </RouterLink>
-      </div>
-      <div v-for="folder in practiceFolder" :key="folder._id">
-        <RouterLink :to="{ name: 'Folder', params: { id: folder._id, name: folder.name } }">
-          <FolderCard :folder="folder" :practice="true" />
-        </RouterLink>
+      <div class="outer-column-right">
+        <div class="folders" v-if="loaded">
+          <h1 style="text-align: center">Folders</h1>
+          <div id="addFolder" v-if="isSessionUser" style="text-align: right">
+            <addFolder @refresh-folders="loadFolderInfo" />
+          </div>
+          <div v-for="folder in repertoireFolders" :key="folder._id" style="background-color: #d77533; opacity: 90%; padding: 30px; margin-top: 30px; text-align: center">
+            <RouterLink :to="{ name: 'Folder', params: { id: folder._id } }">
+              <FolderCard :folder="folder" :practice="false" />
+            </RouterLink>
+          </div>
+          <div v-for="folder in practiceFolder" :key="folder._id" style="background-color: #d77533; back;opacity: 90%; padding: 30px; margin-top: 30px; text-align: center;">
+            <RouterLink :to="{ name: 'Folder', params: { id: folder._id, name: folder.name } }">
+              <FolderCard :folder="folder" :practice="true" />
+            </RouterLink>
+          </div>
+        </div>
+        <p v-else>loading...</p>
       </div>
     </div>
-    <p v-else>loading...</p>
   </div>
 </template>
 <style scoped>
+* {
+  box-sizing: border-box;
+}
+.outer-row {
+  margin-top: 20px;
+  content: "";
+  display: table;
+  clear: both;
+  min-width: 100%;
+}
+
+.outer-column-left {
+  float: left;
+  width: 27%;
+  padding: 50px;
+  text-align: center;
+}
+.outer-column-right {
+  float: left;
+  width: 73%;
+  padding: 50px;
+}
 a {
   font-size: large;
   color: black;
