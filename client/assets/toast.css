@@ -1,8 +1,7 @@
 .toast {
   position: fixed;
   top: 1em;
-  left: 50%;
-  transform: translate(-50%, 0);
+  left: 18%;
   padding: 0.5em 1em;
   border-radius: 6px;
   max-width: 60em;

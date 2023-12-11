@@ -7,6 +7,7 @@ import { onBeforeMount, onBeforeUnmount, onMounted } from "vue";
 import { RouterView } from "vue-router";
 
 const userStore = useUserStore();
+const { isLoggedIn } = storeToRefs(userStore);
 const { toast } = storeToRefs(useToastStore());
 
 // Make sure to update the session before mounting the app in case the user is already logged in
@@ -39,13 +40,12 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="sticky" id="navbar">
+  <article v-if="toast !== null" class="toast" :class="toast.style">
+    <p>{{ toast.message }}</p>
+  </article>
+  <div class="sticky" id="navbar" v-if="isLoggedIn">
     <header>
       <NavComponent />
-
-      <article v-if="toast !== null" class="toast" :class="toast.style">
-        <p>{{ toast.message }}</p>
-      </article>
     </header>
   </div>
   <div id="content">

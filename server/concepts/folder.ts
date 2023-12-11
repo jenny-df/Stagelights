@@ -60,8 +60,8 @@ export default class FolderConcept {
     const stringContents = repertoire.contents.map((id) => id.toString());
     const index = stringContents.indexOf(item.toString());
     if (index !== -1) {
-      const newContents = repertoire.contents.splice(index, 1);
-      await this.repertoireFolders.updateOne({ _id: folder }, { contents: newContents });
+      repertoire.contents.splice(index, 1);
+      await this.repertoireFolders.updateOne({ _id: folder }, { contents: repertoire.contents });
       return { msg: "successfully removed the item given" };
     }
     throw new NotInFolderError(item);
@@ -153,11 +153,11 @@ export default class FolderConcept {
    */
   async removePractice(user: ObjectId, item: string) {
     const practice = await this.doesntHavePracticeFolder(user);
-    const stringContents = practice.contents.map((id) => id.toString());
-    const index = stringContents.indexOf(item.toString());
+    const stringContents = practice.contents;
+    const index = stringContents.indexOf(item);
     if (index !== -1) {
-      const newContents = practice.contents.splice(index, 1);
-      await this.practiceFolders.updateOne({ user }, { contents: newContents, numContents: practice.numContents - 1 });
+      practice.contents.splice(index, 1);
+      await this.practiceFolders.updateOne({ user }, { contents: practice.contents, numContents: practice.numContents - 1 });
       return { msg: "successfully removed the item given" };
     }
     throw new NotInFolderError(item);

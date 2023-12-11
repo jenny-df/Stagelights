@@ -20,7 +20,7 @@ let alreadyAccepted = ref(false);
 const getChallenge = async () => {
   if (!challenge.value) {
     try {
-      challenge.value = await fetchy("/api/challenge/today", "GET");
+      challenge.value = await fetchy("/api/challenge/today", "GET", { alert: false });
       const usersAccepted = await fetchy("/api/challenge/accepted", "GET");
       if (usersAccepted.includes(currentID.value)) {
         alreadyAccepted.value = true;
