@@ -7,7 +7,7 @@ import { RouterLink } from "vue-router";
   <main class="column">
     <div id="loginCard">
       <div id="loginCardContent">
-        <h1>Stagelights Login</h1>
+        <h1>Stagelights Log in</h1>
         <LoginForm />
         <RouterLink :to="{ name: 'Signup' }"> <a>Don't have an account?</a> </RouterLink>
       </div>

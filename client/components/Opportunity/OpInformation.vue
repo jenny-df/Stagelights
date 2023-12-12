@@ -26,7 +26,7 @@ const deleteOp = async () => {
     </div>
     <div class="row" style="text-align: center">
       <h1>{{ props.op.title }}</h1>
-      <p><b>Posted by:</b> {{ props.op.user }}</p>
+      <p><b>Posted by:</b> {{ props.op.user.name }}</p>
       <p><b>Opportunity duration:</b> {{ startOn }} - {{ endsOn }}</p>
       <p><b>Location: </b> {{ props.op.requirements.location }}</p>
       <p><b>Description:</b> {{ props.op.description }}</p>

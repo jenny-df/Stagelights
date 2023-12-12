@@ -17,10 +17,10 @@ const { isLoggedIn } = storeToRefs(useUserStore());
         <div id="loginCard">
           <div id="loginCardContent">
             <h1>Welcome to Stagelights!</h1>
-            <p>Login or sign up to continue.</p>
+            <p>Log in or sign up to continue.</p>
             <br />
             <br />
-            <RouterLink :to="{ name: 'Login' }"> <button>Login</button> </RouterLink>
+            <RouterLink :to="{ name: 'Login' }"> <button>Log in</button> </RouterLink>
             <br />
             <br />
             <RouterLink :to="{ name: 'Signup' }"> <button>Register</button> </RouterLink>

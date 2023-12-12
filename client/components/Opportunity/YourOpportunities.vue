@@ -2,8 +2,11 @@
 import OpCard from "@/components/Opportunity/OpCard.vue";
 import { fetchy } from "@/utils/fetchy";
 import { onBeforeMount, ref } from "vue";
+import { useUserStore } from "../../stores/user";
 import AddOp from "./AddOp.vue";
 import OpInformation from "./OpInformation.vue";
+
+const { currentID } = useUserStore();
 
 const loaded = ref(false);
 let ops = ref<Array<any>>([]);
@@ -16,9 +19,17 @@ async function getActiveOps() {
   try {
     adding.value = false;
     ops.value = await fetchy("/api/opportunities/id", "GET");
-
-    active.value = ops.value.filter((op) => op.isActive);
-    inactive.value = ops.value.filter((op) => !op.isActive);
+    const a: any[] = [];
+    const b: any[] = [];
+    for (const op of ops.value) {
+      if (op.isActive && op.user && currentID.toString() === op.user._id.toString()) {
+        a.push(op);
+      } else if (!op.isActive && op.user && currentID.toString() === op.user._id.toString()) {
+        b.push(op);
+      }
+    }
+    active.value = a;
+    inactive.value = b;
   } catch (_) {
     return;
   }
