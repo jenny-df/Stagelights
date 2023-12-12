@@ -159,14 +159,14 @@ export default class Responses {
       return opportunity;
     }
     const user = await User.getUserById(opportunity.user);
-    return { ...opportunity, user: user.name };
+    return { ...opportunity, user: user };
   }
 
   /**
    * Same as {@link opportunity} but for an array of OpportunityDoc for improved performance.
    */
   static async opportunities(opportunities: OpportunityDoc[]) {
-    const users = await User.idsToNames(opportunities.map((opportunity) => opportunity.user));
+    const users = await User.idsToUsers(opportunities.map((opportunity) => opportunity.user));
     return opportunities.map((opportunity, i) => ({ ...opportunity, user: users[i] }));
   }
 
