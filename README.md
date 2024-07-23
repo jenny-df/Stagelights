@@ -1,6 +1,6 @@
 # Stagelights
-> 6.104 Social Media Personal
-> 
+6.104 Social Media Personal Project. Stagelights is a professional platform for performing artists.
+
 ## Getting Started
 
 If you are using [VSCode](https://code.visualstudio.com/)/VSCodium, install the ESLint and Prettier extensions.
