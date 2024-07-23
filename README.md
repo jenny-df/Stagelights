@@ -1,6 +1,5 @@
 # Stagelights
-
-6.104 Social Media Personal Project. Stagelights is a professional platform for performing artists.
+> 6.104 Social Media Personal Project. Stagelights is a professional platform for performing artists.
 
 ## Getting Started
 
