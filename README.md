@@ -1,4 +1,5 @@
-# 6.1040 Social Media Frontend Starter Code
+# 6.1040 Social Media Personal Project
+
 
 ## Getting Started
 
