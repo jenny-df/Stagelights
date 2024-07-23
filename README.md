@@ -1,5 +1,5 @@
-# 6.1040 Social Media Personal Project
-
+# Stagelights
+6.1040 Social Media Personal Project
 
 ## Getting Started
 
